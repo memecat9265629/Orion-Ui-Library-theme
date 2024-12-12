@@ -97,9 +97,7 @@ end)
 
 local function AddDraggingFunctionality(DragPoint, Main)
 	pcall(function()
-		local Dragging = false
-		local DragInput, MousePos, FramePos
-
+		local Dragging, DragInput, MousePos, FramePos = false
 		DragPoint.InputBegan:Connect(function(Input)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 				Dragging = true
@@ -113,31 +111,19 @@ local function AddDraggingFunctionality(DragPoint, Main)
 				end)
 			end
 		end)
-
 		DragPoint.InputChanged:Connect(function(Input)
 			if Input.UserInputType == Enum.UserInputType.MouseMovement then
 				DragInput = Input
 			end
 		end)
-
 		UserInputService.InputChanged:Connect(function(Input)
 			if Input == DragInput and Dragging then
 				local Delta = Input.Position - MousePos
-				local NewPosition = UDim2.new(
-					FramePos.X.Scale,
-					FramePos.X.Offset + Delta.X,
-					FramePos.Y.Scale,
-					FramePos.Y.Offset + Delta.Y
-				)
-				TweenService:Create(
-					Main,
-					TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
-					{Position = NewPosition}
-				):Play()
+				TweenService:Create(Main, TweenInfo.new(0.45, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Position  = UDim2.new(FramePos.X.Scale,FramePos.X.Offset + Delta.X, FramePos.Y.Scale, FramePos.Y.Offset + Delta.Y)}):Play()
 			end
 		end)
 	end)
-end
+end   
 
 local function Create(Name, Properties, Children)
 	local Object = Instance.new(Name)
